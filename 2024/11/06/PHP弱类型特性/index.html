@@ -1,0 +1,193 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>PHP弱类型特性笔记 | damn</title><meta name="author" content="damn1-ai"><meta name="copyright" content="damn1-ai"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="PHP弱类型一、PHP弱类型特性1.简介在c语言中变量类型一旦固定很难更改,但在PHP中同一个变量可以复制成为多种类型 例如: 123$A &#x3D; 1;$A &#x3D; &quot;HELLO&quot;;$A &#x3D; array(&quot;apple&quot;,&quot;pear&quot;,&quot;banana&quot;);  这样在php中是被允许的,可以在任何时候将变量赋值成任意其他类型变量,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP弱类型特性笔记">
+<meta property="og:url" content="https://damn1-ai.github.io/2024/11/06/PHP%E5%BC%B1%E7%B1%BB%E5%9E%8B%E7%89%B9%E6%80%A7/index.html">
+<meta property="og:site_name" content="damn">
+<meta property="og:description" content="PHP弱类型一、PHP弱类型特性1.简介在c语言中变量类型一旦固定很难更改,但在PHP中同一个变量可以复制成为多种类型 例如: 123$A &#x3D; 1;$A &#x3D; &quot;HELLO&quot;;$A &#x3D; array(&quot;apple&quot;,&quot;pear&quot;,&quot;banana&quot;);  这样在php中是被允许的,可以在任何时候将变量赋值成任意其他类型变量,">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/_20241101215655.jpg">
+<meta property="article:published_time" content="2024-11-06T13:54:25.355Z">
+<meta property="article:modified_time" content="2024-11-11T15:29:04.173Z">
+<meta property="article:author" content="damn1-ai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/_20241101215655.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://damn1-ai.github.io/2024/11/06/PHP%E5%BC%B1%E7%B1%BB%E5%9E%8B%E7%89%B9%E6%80%A7/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        if (name && globalFn[key][name]) return
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PHP弱类型特性笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-11 23:29:04'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/_20241101215655.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">damn</span></a><a class="nav-page-title" href="/"><span class="site-name">PHP弱类型特性笔记</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">PHP弱类型特性笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-11-06T13:54:25.355Z" title="发表于 2024-11-06 21:54:25">2024-11-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-11T15:29:04.173Z" title="更新于 2024-11-11 23:29:04">2024-11-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/PHP/">PHP</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="PHP弱类型"><a href="#PHP弱类型" class="headerlink" title="PHP弱类型"></a>PHP弱类型</h1><h2 id="一、PHP弱类型特性"><a href="#一、PHP弱类型特性" class="headerlink" title="一、PHP弱类型特性"></a>一、PHP弱类型特性</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h3><p>在c语言中变量类型一旦固定很难更改,但在PHP中同一个变量可以复制成为多种类型</p>
+<p>例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$A = 1;</span><br><span class="line">$A = &quot;HELLO&quot;;</span><br><span class="line">$A = array(&quot;apple&quot;,&quot;pear&quot;,&quot;banana&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>这样在php中是被允许的,可以在任何时候将变量赋值成任意其他类型变量,这就是PHP弱类型</p>
+<h3 id="2-弱类型导致的松散比较问题"><a href="#2-弱类型导致的松散比较问题" class="headerlink" title="2.弱类型导致的松散比较问题"></a>2.弱类型导致的松散比较问题</h3><p>在PHP中的等于有三种：<br>$m &#x3D; $n  表示将变量n的值赋值给变量m<br>$m &#x3D;&#x3D; $n  比较变量和的值是否相等，但不要求他们的变量类型相同，比较时前会自动对变量进行类型转换<br>$m &#x3D;&#x3D;&#x3D; $n  比较变量和的值是否相等，同时要求两者类型相同。比较时会先比较变量类型是否相等，然后再比较其值。</p>
+<br>
+
+<p>对于 &#x3D;&#x3D; 号比较的总结<br>1.”0e“开头后面为纯数字的字符串，会当作科学计数法去比较，所以和0相等<br>2.”0x“开头跟数字的字符串，会被当作16进制数去比较<br>3.当比较的一方是字符串时，会先把其转换为数字，不能转换为数字的字符串，被转换为0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#x27;0e123&#x27; == 0				#true</span><br><span class="line">&#x27;0e123&#x27; == &#x27;0e321&#x27;			#true</span><br><span class="line">&#x27;0x10&#x27; == 16				#true</span><br><span class="line">false == &quot;&quot; == 0 == NULL	#true</span><br><span class="line">“app&quot; == 0					#true</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h3 id="3-0e开头的md5和原值："><a href="#3-0e开头的md5和原值：" class="headerlink" title="3.0e开头的md5和原值："></a>3.0e开头的md5和原值：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">QNKCDZO</span><br><span class="line">0e830400451993494058024219903391</span><br><span class="line">240610708</span><br><span class="line">0e462097431906509019562988736854</span><br><span class="line">s878926199a</span><br><span class="line">0e545993274517709034328855841020</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s214587387a</span><br><span class="line">0e848240448830537924465865611904</span><br><span class="line">s214587387a</span><br><span class="line">0e848240448830537924465865611904</span><br><span class="line">s878926199a</span><br><span class="line">0e545993274517709034328855841020</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s1885207154a</span><br><span class="line">0e509367213418206700842008763514</span><br><span class="line">s1502113478a</span><br><span class="line">0e861580163291561247404381396064</span><br><span class="line">s1885207154a</span><br><span class="line">0e509367213418206700842008763514</span><br><span class="line">s1836677006a</span><br><span class="line">0e481036490867661113260034900752</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s1184209335a</span><br><span class="line">0e072485820392773389523109082030</span><br><span class="line">s1665632922a</span><br><span class="line">0e731198061491163073197128363787</span><br><span class="line">s1502113478a</span><br><span class="line">0e861580163291561247404381396064</span><br><span class="line">s1836677006a</span><br><span class="line">0e481036490867661113260034900752</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s1502113478a</span><br><span class="line">0e861580163291561247404381396064</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s1665632922a</span><br><span class="line">0e731198061491163073197128363787</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s1836677006a</span><br><span class="line">0e481036490867661113260034900752</span><br><span class="line">s1885207154a</span><br><span class="line">0e509367213418206700842008763514</span><br><span class="line">s532378020a</span><br><span class="line">0e220463095855511507588041205815</span><br><span class="line">s878926199a</span><br><span class="line">0e545993274517709034328855841020</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s214587387a</span><br><span class="line">0e848240448830537924465865611904</span><br><span class="line">s1502113478a</span><br><span class="line">0e861580163291561247404381396064</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s1665632922a</span><br><span class="line">0e731198061491163073197128363787</span><br><span class="line">s1885207154a</span><br><span class="line">0e509367213418206700842008763514</span><br><span class="line">s1836677006a</span><br><span class="line">0e481036490867661113260034900752</span><br><span class="line">s1665632922a</span><br><span class="line">0e731198061491163073197128363787</span><br><span class="line">s878926199a</span><br><span class="line">0e545993274517709034328855841020</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://damn1-ai.github.io">damn1-ai</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://damn1-ai.github.io/2024/11/06/PHP%E5%BC%B1%E7%B1%BB%E5%9E%8B%E7%89%B9%E6%80%A7/">https://damn1-ai.github.io/2024/11/06/PHP%E5%BC%B1%E7%B1%BB%E5%9E%8B%E7%89%B9%E6%80%A7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://damn1-ai.github.io" target="_blank">damn</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/_20241101215655.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2024/11/07/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/" title="文件包含漏洞笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">文件包含漏洞笔记</div></div><div class="info-2"><div class="info-item-1">...</div></div></div></a><a class="pagination-related" href="/2024/11/06/HTTP%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0/" title="HTTP请求伪造笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">HTTP请求伪造笔记</div></div><div class="info-2"><div class="info-item-1">HTTP请求伪造一、HTTP请求如下http请求: 123456789101112131415161718POST  /login.php  HTTP/1.1Host: test.comProxy-Connection:keep-aliveContent-Length:19Cache-Control:max-age=0origin:http://test.comUpgrade-Insecure-Requests:1Content-Type:application/x-vvv-torm-urlencodedUser-Agent:Mozilla/5.0 (Vindovs NT 10.0;Vin64:x64)AppleVebKit/537.36 (KHTML,like...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/_20241101215655.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">damn1-ai</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PHP%E5%BC%B1%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">PHP弱类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81PHP%E5%BC%B1%E7%B1%BB%E5%9E%8B%E7%89%B9%E6%80%A7"><span class="toc-number">1.1.</span> <span class="toc-text">一、PHP弱类型特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BC%B1%E7%B1%BB%E5%9E%8B%E5%AF%BC%E8%87%B4%E7%9A%84%E6%9D%BE%E6%95%A3%E6%AF%94%E8%BE%83%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.弱类型导致的松散比较问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-0e%E5%BC%80%E5%A4%B4%E7%9A%84md5%E5%92%8C%E5%8E%9F%E5%80%BC%EF%BC%9A"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.0e开头的md5和原值：</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/12/sql%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/" title="sql注入基础笔记">sql注入基础笔记</a><time datetime="2024-11-12T13:50:54.102Z" title="发表于 2024-11-12 21:50:54">2024-11-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/11/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0waf%E7%BB%95%E8%BF%87/" title="文件上传waf绕过笔记">文件上传waf绕过笔记</a><time datetime="2024-11-11T15:27:18.694Z" title="发表于 2024-11-11 23:27:18">2024-11-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/11/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" title="文件上传基本原理笔记">文件上传基本原理笔记</a><time datetime="2024-11-11T15:27:18.690Z" title="发表于 2024-11-11 23:27:18">2024-11-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%B8%AD%E7%9A%84%E4%BC%AA%E5%8D%8F%E8%AE%AE/" title="文件包含中的伪协议笔记">文件包含中的伪协议笔记</a><time datetime="2024-11-07T14:27:12.764Z" title="发表于 2024-11-07 22:27:12">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/" title="文件包含漏洞笔记">文件包含漏洞笔记</a><time datetime="2024-11-07T14:27:12.758Z" title="发表于 2024-11-07 22:27:12">2024-11-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By damn1-ai</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'MxYrNpORgUck6GjtDTfttvoZ-gzGzoHsz',
+      appKey: 'yS7zNwceDMiogTX4sgUfVqBJ',
+      avatar: 'monsterid',
+      serverURLs: 'https://mxyrnpor.lc-cn-n1-shared.com',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
