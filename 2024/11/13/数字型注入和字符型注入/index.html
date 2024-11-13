@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数字型注入和字符型注入笔记 | damn</title><meta name="author" content="damn1-ai"><meta name="copyright" content="damn1-ai"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数字型注入和字符型注入1.逻辑运算符and和or(1)and条件1 and 条件2 两个都为真时返回真,否则返回假 (2)or条件1 or 条件2 有一个真时返回真,两个都为假时返回假 2.注释符(1)单行注释符– -    此注释符第二个杠后空格不能丢失,第三个杠可以替换成任意字符 “#”    此注释符在url编码时应该使用%23替代 (2)多行注释符1&#x2F;**&#x2F;   例如: 1&#x2F;*这是注释*&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字型注入和字符型注入笔记">
+<meta property="og:url" content="https://damn1-ai.github.io/2024/11/13/%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="damn">
+<meta property="og:description" content="数字型注入和字符型注入1.逻辑运算符and和or(1)and条件1 and 条件2 两个都为真时返回真,否则返回假 (2)or条件1 or 条件2 有一个真时返回真,两个都为假时返回假 2.注释符(1)单行注释符– -    此注释符第二个杠后空格不能丢失,第三个杠可以替换成任意字符 “#”    此注释符在url编码时应该使用%23替代 (2)多行注释符1&#x2F;**&#x2F;   例如: 1&#x2F;*这是注释*&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/_20241101215655.jpg">
+<meta property="article:published_time" content="2024-11-13T11:28:33.503Z">
+<meta property="article:modified_time" content="2024-11-13T11:29:15.907Z">
+<meta property="article:author" content="damn1-ai">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/_20241101215655.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://damn1-ai.github.io/2024/11/13/%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        if (name && globalFn[key][name]) return
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数字型注入和字符型注入笔记',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-13 19:29:15'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"></div><div class="carplay"></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/_20241101215655.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">damn</span></a><a class="nav-page-title" href="/"><span class="site-name">数字型注入和字符型注入笔记</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">数字型注入和字符型注入笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-11-13T11:28:33.503Z" title="发表于 2024-11-13 19:28:33">2024-11-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-13T11:29:15.907Z" title="更新于 2024-11-13 19:29:15">2024-11-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/sql%E6%B3%A8%E5%85%A5/">sql注入</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="数字型注入和字符型注入"><a href="#数字型注入和字符型注入" class="headerlink" title="数字型注入和字符型注入"></a>数字型注入和字符型注入</h1><h2 id="1-逻辑运算符and和or"><a href="#1-逻辑运算符and和or" class="headerlink" title="1.逻辑运算符and和or"></a>1.逻辑运算符and和or</h2><h3 id="1-and"><a href="#1-and" class="headerlink" title="(1)and"></a>(1)and</h3><p>条件1 and 条件2</p>
+<p>两个都为真时返回真,否则返回假</p>
+<h3 id="2-or"><a href="#2-or" class="headerlink" title="(2)or"></a>(2)or</h3><p>条件1 or 条件2</p>
+<p>有一个真时返回真,两个都为假时返回假</p>
+<h2 id="2-注释符"><a href="#2-注释符" class="headerlink" title="2.注释符"></a>2.注释符</h2><h3 id="1-单行注释符"><a href="#1-单行注释符" class="headerlink" title="(1)单行注释符"></a>(1)单行注释符</h3><p>– -    此注释符第二个杠后空格不能丢失,第三个杠可以替换成任意字符</p>
+<p>“#”    此注释符在url编码时应该使用%23替代</p>
+<h3 id="2-多行注释符"><a href="#2-多行注释符" class="headerlink" title="(2)多行注释符"></a>(2)多行注释符</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/**/ </span><br></pre></td></tr></table></figure>
+
+<p>例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/*这是注释*/ </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="3-数字型注入"><a href="#3-数字型注入" class="headerlink" title="3.数字型注入"></a>3.数字型注入</h2><h4 id="1-数字型sql注入构造"><a href="#1-数字型sql注入构造" class="headerlink" title="(1)数字型sql注入构造"></a>(1)数字型sql注入构造</h4><h5 id="服务器代码"><a href="#服务器代码" class="headerlink" title="服务器代码"></a>服务器代码</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$id=$_POST[ &#x27;id&#x27;];</span><br><span class="line">$mysql = new_mysqli(&quot;localhost&quot;, &quot;root&quot;, &quot;root&quot;, &quot;web&quot;)</span><br><span class="line">$query = &quot;select * from user where id=$id;&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="正常情况下"><a href="#正常情况下" class="headerlink" title="正常情况下"></a>正常情况下</h5><p>输入id&#x3D;1<br>返回admin的信息</p>
+<h5 id="Sql注入输入"><a href="#Sql注入输入" class="headerlink" title="Sql注入输入"></a>Sql注入输入</h5><p>输入id&#x3D;1 or1&#x3D;1%23<br>拼接后的sql语句<br>select* from user where id&#x3D;1 or 1&#x3D;1#;<br>就可以拿到当前表中的所有数据</p>
+<p>若将or改为and则只会输出id&#x3D;1的数据</p>
+<h5 id="数据库查询过程"><a href="#数据库查询过程" class="headerlink" title="数据库查询过程"></a>数据库查询过程</h5><p><img src="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/image-20241113190203012.png" alt="image-20241113190203012"></p>
+<h3 id="2-数字型注入的防御"><a href="#2-数字型注入的防御" class="headerlink" title="(2)数字型注入的防御"></a>(2)数字型注入的防御</h3><p>使用intval函数将用户输入强制转化为整数</p>
+<p>intval($id)</p>
+<p>规则:取左边数字,遇到非数字则返回0</p>
+<p>示例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">intval(a1)→0</span><br><span class="line">intval(1f)→1</span><br><span class="line">intval(123dfg)→123</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-字符型注入"><a href="#4-字符型注入" class="headerlink" title="4.字符型注入"></a>4.字符型注入</h2><h3 id="1-字符型注入构造"><a href="#1-字符型注入构造" class="headerlink" title="(1)字符型注入构造"></a>(1)字符型注入构造</h3><h5 id="服务器代码-1"><a href="#服务器代码-1" class="headerlink" title="服务器代码"></a>服务器代码</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if ($_POST[&#x27;username&#x27;]&amp;&amp;$ POST[&#x27;password&#x27;]&#123;</span><br><span class="line">$username=$_POST[&#x27;username&#x27;];</span><br><span class="line">$password=$_POST[&#x27;password&#x27;];</span><br><span class="line"></span><br><span class="line">$mysql = new mysqli(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;,&quot;web&quot;);</span><br><span class="line"></span><br><span class="line">$query = &quot;select * from user where username=&#x27;&quot;.$username.&quot;&#x27;and password=&#x27;&quot; .$password.&quot;&#x27;;&quot;;</span><br><span class="line">#var dump($query);</span><br><span class="line"></span><br><span class="line">$row-$mysql-&gt;query($query);</span><br><span class="line">#var dump(srow):</span><br><span class="line">$result-$row-&gt;fetch_a11()</span><br></pre></td></tr></table></figure>
+
+<h5 id="正常输入"><a href="#正常输入" class="headerlink" title="正常输入"></a>正常输入</h5><p>username&#x3D;admin  password&#x3D;ichungiu</p>
+<p>或者</p>
+<p>username&#x3D;guest  password&#x3D;guest<br>这里使用了一个and，也就是说只有同时知道用户名和密码，才能通过where的判断</p>
+<h5 id="sql注入的输入"><a href="#sql注入的输入" class="headerlink" title="sql注入的输入"></a>sql注入的输入</h5><p>这里和前面的数字型注入有两点不同，一个是需要闭合单引号，还有一个是and判断<br>sql注入<br>username&#x3D;admin’and1&#x3D;1%23 password&#x3D;1</p>
+<p>拼接后的代码<br>select * from user where username&#x3D; ‘admin’ and 1&#x3D;1#’and password&#x3D; ‘1’<br>使用or，在不知道用户名的条件下，也能绕过判断<br>username&#x3D;a’or1&#x3D;1%23 password&#x3D;1<br>select * from user where username&#x3D; ‘a’ or 1&#x3D;1#’and password&#x3D; ‘1’</p>
+<h3 id="2-字符型注入的防御"><a href="#2-字符型注入的防御" class="headerlink" title="(2)字符型注入的防御"></a>(2)字符型注入的防御</h3><p>字符型sql注入需要输入单引号，闭合sql语句，所以在防御上我们可以过滤单引号，或者转义单引号</p>
+<p>addslashes函数转义用户的输入<br><img src="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/image-20241113192555772.png" alt="image-20241113192555772"></p>
+<h2 id="5-数字型注入和字符型注入的区别"><a href="#5-数字型注入和字符型注入的区别" class="headerlink" title="5.数字型注入和字符型注入的区别"></a>5.数字型注入和字符型注入的区别</h2><h4 id="注入角度"><a href="#注入角度" class="headerlink" title="注入角度"></a>注入角度</h4><p>相差一个单引号，字符型注入需要使用单引号闭合，数字型注入不需要使用单引号闭合<br>数字型: id&#x3D;1 or 1&#x3D;1%23<br>字符型: username&#x3D;1’ or 1&#x3D;1%23</p>
+<h4 id="防御角度"><a href="#防御角度" class="headerlink" title="防御角度"></a>防御角度</h4><p>数字型注入可以使用intval强制转换成整型，而字符型需要使用转义函数，来转义单引号</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://damn1-ai.github.io">damn1-ai</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://damn1-ai.github.io/2024/11/13/%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/">https://damn1-ai.github.io/2024/11/13/%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://damn1-ai.github.io" target="_blank">damn</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/_20241101215655.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2024/11/13/MySQL%E6%A8%A1%E5%BC%8F%E4%B8%8EMySQLi%E6%A8%A1%E5%BC%8F/" title="MySQL模式与MySQLi模式笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">MySQL模式与MySQLi模式笔记</div></div><div class="info-2"><div class="info-item-1">MySQL模式与MySQLi模式1.MySQL模式基本过程 MySQL模式语句12345mysql_connect()	     	连接MySQL数据库mysql_select_db()	    数据库名，数据库连接)选择数据库mysql _query()		 	执行sql语句mysql _fetch_assoc()    从结果集中取得一行做为关联数组mysql_close()		    关闭数据库连接  MySQL链接脚本1234567891011121314151617181920&lt;?php$id=$_POST[&#x27;id&#x27;]//新建MySQL连接$mysql=mysql_connect(&#x27;mysql数据库ip地址&#x27;,&#x27;用户名&#x27;,&#x27;密码&#x27;);mysql select_db(&#x27;数据库名称&#x27;,$mysql);//执行sql语句$sql=&quot;select * from user where...</div></div></div></a><a class="pagination-related" href="/2024/11/12/sql%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/" title="sql注入基础笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">sql注入基础笔记</div></div><div class="info-2"><div class="info-item-1">sql注入基础1.sql命令行中的基本语句(1)select查询语句基本格式: select 列名 from 表名查询多个列: select 列名1,列名2 from 表名select username,password from user 查询所有列: select*from 表名使用where语句进行条件查询: select 列名 from 表名 where 列名&#x3D;xxselect*from user where username&#x3D;’admin’ (2)insert插入语句基本格式: insert into 表名(列名1,列名2,列名3)values(值1,值2,值3)insert into user(id,username,password) values(3,’test’,’test123’) 此命令为向user表中插入第三个用户名为test,密码为test123的用户 省略列名形式: insert into 表名 values(值1,值2,值3)insert into user...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="https://damn-1331083500.cos.ap-beijing.myqcloud.com/img/_20241101215655.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">damn1-ai</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">数字型注入和字符型注入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6and%E5%92%8Cor"><span class="toc-number">1.1.</span> <span class="toc-text">1.逻辑运算符and和or</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-and"><span class="toc-number">1.1.1.</span> <span class="toc-text">(1)and</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-or"><span class="toc-number">1.1.2.</span> <span class="toc-text">(2)or</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%B3%A8%E9%87%8A%E7%AC%A6"><span class="toc-number">1.2.</span> <span class="toc-text">2.注释符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%8D%95%E8%A1%8C%E6%B3%A8%E9%87%8A%E7%AC%A6"><span class="toc-number">1.2.1.</span> <span class="toc-text">(1)单行注释符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%A4%9A%E8%A1%8C%E6%B3%A8%E9%87%8A%E7%AC%A6"><span class="toc-number">1.2.2.</span> <span class="toc-text">(2)多行注释符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.3.</span> <span class="toc-text">3.数字型注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%95%B0%E5%AD%97%E5%9E%8Bsql%E6%B3%A8%E5%85%A5%E6%9E%84%E9%80%A0"><span class="toc-number">1.3.0.1.</span> <span class="toc-text">(1)数字型sql注入构造</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%A3%E7%A0%81"><span class="toc-number">1.3.0.1.1.</span> <span class="toc-text">服务器代码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8%E6%83%85%E5%86%B5%E4%B8%8B"><span class="toc-number">1.3.0.1.2.</span> <span class="toc-text">正常情况下</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Sql%E6%B3%A8%E5%85%A5%E8%BE%93%E5%85%A5"><span class="toc-number">1.3.0.1.3.</span> <span class="toc-text">Sql注入输入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9F%A5%E8%AF%A2%E8%BF%87%E7%A8%8B"><span class="toc-number">1.3.0.1.4.</span> <span class="toc-text">数据库查询过程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E7%9A%84%E9%98%B2%E5%BE%A1"><span class="toc-number">1.3.1.</span> <span class="toc-text">(2)数字型注入的防御</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text">4.字符型注入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5%E6%9E%84%E9%80%A0"><span class="toc-number">1.4.1.</span> <span class="toc-text">(1)字符型注入构造</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BB%A3%E7%A0%81-1"><span class="toc-number">1.4.1.0.1.</span> <span class="toc-text">服务器代码</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AD%A3%E5%B8%B8%E8%BE%93%E5%85%A5"><span class="toc-number">1.4.1.0.2.</span> <span class="toc-text">正常输入</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#sql%E6%B3%A8%E5%85%A5%E7%9A%84%E8%BE%93%E5%85%A5"><span class="toc-number">1.4.1.0.3.</span> <span class="toc-text">sql注入的输入</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5%E7%9A%84%E9%98%B2%E5%BE%A1"><span class="toc-number">1.4.2.</span> <span class="toc-text">(2)字符型注入的防御</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.5.</span> <span class="toc-text">5.数字型注入和字符型注入的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E8%A7%92%E5%BA%A6"><span class="toc-number">1.5.0.1.</span> <span class="toc-text">注入角度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B2%E5%BE%A1%E8%A7%92%E5%BA%A6"><span class="toc-number">1.5.0.2.</span> <span class="toc-text">防御角度</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/13/MySQL%E6%A8%A1%E5%BC%8F%E4%B8%8EMySQLi%E6%A8%A1%E5%BC%8F/" title="MySQL模式与MySQLi模式笔记">MySQL模式与MySQLi模式笔记</a><time datetime="2024-11-13T11:28:38.668Z" title="发表于 2024-11-13 19:28:38">2024-11-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/13/%E6%95%B0%E5%AD%97%E5%9E%8B%E6%B3%A8%E5%85%A5%E5%92%8C%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5/" title="数字型注入和字符型注入笔记">数字型注入和字符型注入笔记</a><time datetime="2024-11-13T11:28:33.503Z" title="发表于 2024-11-13 19:28:33">2024-11-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/12/sql%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/" title="sql注入基础笔记">sql注入基础笔记</a><time datetime="2024-11-12T13:50:54.102Z" title="发表于 2024-11-12 21:50:54">2024-11-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/11/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0waf%E7%BB%95%E8%BF%87/" title="文件上传waf绕过笔记">文件上传waf绕过笔记</a><time datetime="2024-11-11T15:27:18.694Z" title="发表于 2024-11-11 23:27:18">2024-11-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/11/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" title="文件上传基本原理笔记">文件上传基本原理笔记</a><time datetime="2024-11-11T15:27:18.690Z" title="发表于 2024-11-11 23:27:18">2024-11-11</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By damn1-ai</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'MxYrNpORgUck6GjtDTfttvoZ-gzGzoHsz',
+      appKey: 'yS7zNwceDMiogTX4sgUfVqBJ',
+      avatar: 'monsterid',
+      serverURLs: 'https://mxyrnpor.lc-cn-n1-shared.com',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
